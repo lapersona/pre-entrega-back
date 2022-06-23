@@ -1,0 +1,23 @@
+[
+	{
+		"productos": [
+			{
+				"title": "Cuaderno",
+				"price": 123.45,
+				"desc": "Sirve para escribir cosas",
+				"cod": "abc127",
+				"thumbnail": "https://cdn2.iconfinder.com/data/icons/scenarium-vol-2-1/128/040_rules_book_do_not_pros_cons_handbook-256.png",
+				"stock": 180,
+				"timeStamp": "2022-06-16 12:27:36",
+				"id": 5
+			}
+		],
+		"timeStamp": "2022-06-16 12:37:35",
+		"id": 1
+	},
+	{
+		"productos": [],
+		"timeStamp": "2022-06-16 12:38:18",
+		"id": 2
+	}
+]
