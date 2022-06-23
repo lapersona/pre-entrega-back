@@ -20,7 +20,7 @@ app.use( '/api/carrito', cartRoutes );
 app.get( '/*', (req,res) => {
     res.json({
         error: -2,
-        desc: "Ruta no implementada"
+        desc: "No Route"
     })
 } )
 
