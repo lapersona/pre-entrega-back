@@ -2,8 +2,8 @@ const express = require( 'express' );
 const cors = require( 'cors' );
 
 //Import Routes
-const productsRoutes = require( './routes/productsRoutes' );
-const cartRoutes = require( './routes/cartRoutes' );
+const productsRoutes = require( './routes/productsRoutes.js' );
+const cartRoutes = require( './routes/cartRoutes.js' );
 
 //Init express
 const app = express();
