@@ -1,9 +1,10 @@
 const router = require( 'express' ).Router();
 const fs = require( 'fs' );
 
+
 //Mostrar productos
 router.get( '/', ( req, res ) => {
-  const read = fs.readFileSync( './src/productos.txt', 'utf-8' );
+  const read = fs.readFileSync( './server/src/productos.txt' , 'utf-8' );
   const products = JSON.parse( read );
 
   res.json( products );
@@ -12,7 +13,7 @@ router.get( '/', ( req, res ) => {
 //Mostrar producto por id
 router.get( '/:id', ( req, res ) => {
   const id = Number( req.params.id );
-  const read = fs.readFileSync( './src/productos.txt', 'utf-8' );
+  const read = fs.readFileSync( './server/src/productos.txt', 'utf-8' );
   const products = JSON.parse( read );
 
   const product = products.find( prod => prod.id === id );
@@ -27,14 +28,14 @@ router.get( '/:id', ( req, res ) => {
 router.post( '/', ( req, res ) => {
   if( req.headers.admin ){
     const product = req.body;
-    const read = fs.readFileSync( './src/productos.txt', 'utf-8' );
+    const read = fs.readFileSync( './server/src/productos.txt', 'utf-8' );
     const products = JSON.parse( read );
     const date = new Date();
     product.timeStamp = date.toISOString().split('T')[0] + ' ' + date.toLocaleTimeString();
     const productsId = products.map( p => p.id );
     product.id = Math.max( ...productsId ) + 1;
     products.push( product );
-    fs.writeFileSync( './src/productos.txt', JSON.stringify( products, null, '\t' ) );
+    fs.writeFileSync( './server/src/productos.txt', JSON.stringify( products, null, '\t' ) );
     res.json( product );
   }
   else{
@@ -56,7 +57,7 @@ router.put( '/:id', ( req, res ) => {
     product.timeStamp = date.toISOString().split('T')[0] + ' ' + date.toLocaleTimeString();
     product.id = id;
     //Lee productos.txt y lo parsea
-    const read = fs.readFileSync( './src/productos.txt', 'utf-8' );
+    const read = fs.readFileSync( './server/src/productos.txt', 'utf-8' );
     const products = JSON.parse( read );
     //Busca index de producto por id
     const idx = products.findIndex( p => p.id == id );
@@ -64,7 +65,7 @@ router.put( '/:id', ( req, res ) => {
         res.send({  error :'El producto a editar no existe.' })
     } else {
         products.splice( idx, 1, product );
-        fs.writeFileSync( './src/productos.txt', JSON.stringify( products, null, '\t' ) );
+        fs.writeFileSync( './server/src/productos.txt', JSON.stringify( products, null, '\t' ) );
         res.json( product );
     }
   }
@@ -80,7 +81,7 @@ router.put( '/:id', ( req, res ) => {
 router.delete( '/:id', ( req, res ) => {
   if( req.headers.admin ){
     const id = req.params.id;
-    const read = fs.readFileSync( './src/productos.txt', 'utf-8' );
+    const read = fs.readFileSync( './server/src/productos.txt', 'utf-8' );
     const products = JSON.parse( read );
     const idx = products.findIndex( p => p.id == id );
 
@@ -88,7 +89,7 @@ router.delete( '/:id', ( req, res ) => {
         res.send( 'El producto a eliminar no existe.' )
     } else {
         products.splice( idx, 1 );
-        fs.writeFileSync( './src/productos.txt', JSON.stringify( products, null, '\t' ) );
+        fs.writeFileSync( './server/src/productos.txt', JSON.stringify( products, null, '\t' ) );
         res.json( `Se elimino el producto con id: ${ id }` );
     }
   }

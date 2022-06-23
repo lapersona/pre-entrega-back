@@ -6,7 +6,7 @@ router.post( '/', ( req, res ) => {
   //Crea carrito
   const carrito = { productos: [] };
   //Lee carritos.txt
-  const read = fs.readFileSync( './src/carritos.txt', 'utf-8' );
+  const read = fs.readFileSync( './server/src/carritos.txt', 'utf-8' );
   const carritos = JSON.parse( read );
   //Timestamp
   const date = new Date();
@@ -17,21 +17,21 @@ router.post( '/', ( req, res ) => {
   //Push carrito en array
   carritos.push( carrito );
   //Agrega carrito a txt
-  fs.writeFileSync( './src/carritos.txt', JSON.stringify( carritos, null, '\t' ) );
+  fs.writeFileSync( './server/src/carritos.txt', JSON.stringify( carritos, null, '\t' ) );
   res.json( carrito );
 });
 
 //Vacia carrito por id
 router.delete( '/:id', ( req, res ) => {
   const id = req.params.id;
-  const read = fs.readFileSync( './src/carritos.txt', 'utf-8' );
+  const read = fs.readFileSync( './server/src/carritos.txt', 'utf-8' );
   const carritos = JSON.parse( read );
   const idx = carritos.findIndex( p => p.id == id );
   if( idx === -1 ){
       res.send( 'El carrito no existe.' )
   } else {
       carritos.splice( idx, 1 );
-      fs.writeFileSync( './src/carritos.txt', JSON.stringify( carritos, null, '\t' ) );
+      fs.writeFileSync( './server/src/carritos.txt', JSON.stringify( carritos, null, '\t' ) );
       res.json( `El carrito con id: ${ id } fue eliminado.` );
   }
 });
@@ -39,7 +39,7 @@ router.delete( '/:id', ( req, res ) => {
 //Devuelve lista de productos segun id carrito
 router.get( '/:id/productos', ( req, res ) => {
   const id = Number( req.params.id );
-  const read = fs.readFileSync( './src/carritos.txt', 'utf-8' );
+  const read = fs.readFileSync( './server/src/carritos.txt', 'utf-8' );
   const carritos = JSON.parse( read );
   const carrito = carritos.find( prod => prod.id === id );
   if ( carrito == undefined ){
@@ -53,14 +53,14 @@ router.get( '/:id/productos', ( req, res ) => {
 router.post( '/:id/productos', ( req, res ) => {
   const product = req.body;
   const id = Number( req.params.id );
-  const read = fs.readFileSync( './src/carritos.txt', 'utf-8' );
+  const read = fs.readFileSync( './server/src/carritos.txt', 'utf-8' );
   const carritos = JSON.parse( read );
   const carrito = carritos.find( prod => prod.id === id );
   if ( carrito == undefined ){
     res.send({ error: 'Carrito no encontrado' });
   } else {
     carrito.productos.push( product );
-    fs.writeFileSync( './src/carritos.txt', JSON.stringify( carritos, null, '\t' ) );
+    fs.writeFileSync( './server/src/carritos.txt', JSON.stringify( carritos, null, '\t' ) );
     res.json( carrito );
   }
 });
@@ -71,7 +71,7 @@ router.delete( '/:id/productos/:id_prod', ( req, res ) => {
   const idCarrito = Number( req.params.id );
   const idProd = Number( req.params.id_prod );
   //Leer archivo y parsear a json
-  const read = fs.readFileSync( './src/carritos.txt', 'utf-8' );
+  const read = fs.readFileSync( './server/src/carritos.txt', 'utf-8' );
   const carritos = JSON.parse( read );
   //Buscar carrito por id
   const carrito = carritos.find( prod => prod.id === idCarrito );
@@ -85,7 +85,7 @@ router.delete( '/:id/productos/:id_prod', ( req, res ) => {
     } else {
       //Eliminar producto
       carrito.productos.splice( idx, 1 );
-      fs.writeFileSync( './src/carritos.txt', JSON.stringify( carritos, null, '\t' ) );
+      fs.writeFileSync( './server/src/carritos.txt', JSON.stringify( carritos, null, '\t' ) );
       res.send( `Se elimino el producto con id: ${ idProd } del carrito ${ idCarrito }` );
     }
   }
